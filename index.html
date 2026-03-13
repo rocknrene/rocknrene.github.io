@@ -2,279 +2,562 @@
 <html lang="en">
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>René Castillo | Marine Geology</title>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<title>René Castillo | Marine Geology</title>
+  <style>
+    body{
+      font-family:'Inter',sans-serif;
+      margin:0;
+      color:white;
+      overflow-x:hidden;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    #bg-video{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      z-index:-2;
+      filter:brightness(.35);
+    }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    .page-overlay{
+      position:fixed;
+      inset:0;
+      background:linear-gradient(to bottom, rgba(5,10,20,.35), rgba(5,10,20,.7));
+      z-index:-1;
+    }
 
-<style>
+    .container{
+      position:relative;
+      z-index:1;
+      max-width:1100px;
+      margin:auto;
+      padding:40px 24px 60px;
+    }
 
-body{
-font-family:'Inter',sans-serif;
-margin:0;
-color:white;
-}
+    header{
+      text-align:center;
+      margin-bottom:48px;
+    }
 
-#bg-video{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:-1;
-filter:brightness(.35);
-}
+    header h1{
+      font-size:3rem;
+      margin:0 0 10px;
+    }
 
-.container{
-position:relative;
-z-index:1;
-max-width:1000px;
-margin:auto;
-padding:40px;
-}
+    header p{
+      margin:0;
+      font-size:1.05rem;
+      opacity:.9;
+    }
 
-header{
-text-align:center;
-margin-bottom:60px;
-}
+    .card{
+      background:rgba(0,0,0,.42);
+      padding:28px;
+      border-radius:18px;
+      margin-bottom:28px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 10px 30px rgba(0,0,0,.18);
+    }
 
-header h1{
-font-size:3em;
-}
+    .profile{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:28px;
+    }
 
-.profile{
-display:flex;
-flex-wrap:wrap;
-align-items:center;
-gap:40px;
-margin-bottom:60px;
-}
+    .profile img{
+      width:180px;
+      height:180px;
+      object-fit:cover;
+      border-radius:999px;
+      border:4px solid rgba(255,255,255,.9);
+      flex-shrink:0;
+    }
 
-.profile img{
-width:180px;
-border-radius:100px;
-border:4px solid white;
-}
+    .profile-text{
+      flex:1;
+      min-width:260px;
+    }
 
-.card{
-background:rgba(0,0,0,.45);
-padding:30px;
-border-radius:12px;
-margin-bottom:40px;
-backdrop-filter:blur(10px);
-}
+    h2{
+      margin-top:0;
+      margin-bottom:14px;
+      font-size:1.5rem;
+    }
 
-.links a{
-margin-right:20px;
-color:#7fd7ff;
-text-decoration:none;
-font-weight:600;
-}
+    p{
+      line-height:1.6;
+    }
 
-.poster-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
+    .links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:18px;
+    }
 
-.poster{
-position:relative;
-overflow:hidden;
-border-radius:10px;
-}
+    .links a{
+      color:#8fe8ff;
+      text-decoration:none;
+      font-weight:600;
+      padding:10px 14px;
+      border:1px solid rgba(143,232,255,.35);
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      transition:.2s ease;
+    }
 
-.poster img{
-width:100%;
-}
+    .links a:hover{
+      transform:translateY(-2px);
+      background:rgba(143,232,255,.12);
+    }
 
-.poster-overlay{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.75);
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-opacity:0;
-transition:.3s;
-}
+    .poster-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:18px;
+    }
 
-.poster:hover .poster-overlay{
-opacity:1;
-}
+    .poster-card{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+      padding:24px;
+      border-radius:14px;
+      cursor:pointer;
+      transition:.2s ease;
+      text-align:center;
+    }
 
-.poster-overlay a{
-background:#00c3ff;
-padding:8px 16px;
-border-radius:6px;
-color:white;
-text-decoration:none;
-margin-top:10px;
-}
+    .poster-card:hover{
+      transform:translateY(-4px) scale(1.02);
+      background:rgba(255,255,255,.14);
+    }
 
-#globe{
-width:100%;
-height:500px;
-}
+    .poster-card h3{
+      margin:0 0 10px;
+    }
 
-.spotify{
-text-align:center;
-}
+    .poster-card p{
+      margin:0;
+      opacity:.9;
+    }
 
-footer{
-text-align:center;
-opacity:.7;
-margin-top:60px;
-}
+    #globe{
+      width:100%;
+      height:520px;
+      border-radius:14px;
+      overflow:hidden;
+      background:rgba(0,0,0,.18);
+    }
 
-</style>
+    .site-legend{
+      margin-top:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px 18px;
+      font-size:.95rem;
+      opacity:.95;
+    }
 
+    .legend-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      display:inline-block;
+    }
+
+    .spotify{
+      text-align:center;
+    }
+
+    .spotify img{
+      max-width:100%;
+      border-radius:12px;
+    }
+
+    footer{
+      text-align:center;
+      opacity:.78;
+      margin-top:24px;
+    }
+
+    .lightbox{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.94);
+      z-index:9999;
+    }
+
+    .lightbox iframe{
+      width:90%;
+      height:88%;
+      margin:5vh auto 0;
+      display:block;
+      border:none;
+      border-radius:8px;
+      background:white;
+    }
+
+    .lightbox-close{
+      position:absolute;
+      top:14px;
+      right:24px;
+      color:white;
+      font-size:42px;
+      cursor:pointer;
+      line-height:1;
+    }
+
+    .lightbox-download{
+      position:absolute;
+      left:24px;
+      top:18px;
+    }
+
+    .lightbox-download a{
+      color:white;
+      text-decoration:none;
+      background:#0aa8d8;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+    }
+
+    @media (max-width:700px){
+      header h1{
+        font-size:2.3rem;
+      }
+
+      #globe{
+        height:420px;
+      }
+
+      .lightbox iframe{
+        width:96%;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<video autoplay muted loop id="bg-video">
-<source src="ocean.mp4" type="video/mp4">
-</video>
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="ocean.mp4" type="video/mp4">
+  </video>
+  <div class="page-overlay"></div>
 
-<div class="container">
+  <div class="container">
 
-<header>
-<h1>René Castillo</h1>
-<p>PhD Candidate | Marine Geology | Geohazards | Sediment Transport</p>
-</header>
+    <header>
+      <h1>René Castillo</h1>
+      <p>PhD Candidate | Marine Geology | Geohazards | Sediment Transport</p>
+    </header>
 
-<section class="profile card">
+    <section class="card profile">
+      <img src="profile.jpg" alt="Profile photo of René Castillo">
 
-<img src="profile.jpg">
+      <div class="profile-text">
+        <h2>About</h2>
+        <p>
+          I am a PhD candidate in Earth Sciences at The Ohio State University studying submarine
+          landslides, sediment transport, and marine geohazards. My work connects sedimentology,
+          geomechanics, and computational approaches to understand slope instability, sediment routing,
+          and mass transport deposits in convergent margin systems.
+        </p>
 
-<div>
+        <div class="links">
+          <a href="https://github.com/rocknrene" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://scholar.google.com/citations?hl=en&user=i3UMLBMAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+          <a href="https://orcid.org/0009-0006-1897-0000" target="_blank" rel="noopener noreferrer">ORCID</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </section>
 
-<h2>About</h2>
+    <section class="card">
+      <h2>Research</h2>
+      <p>
+        My research focuses on submarine landslides, sediment transport, and marine geohazards,
+        especially in systems such as the Japan Trench. I am interested in how tectonics, slope
+        processes, and sediment properties interact to shape hazard and stratigraphic records.
+      </p>
+    </section>
 
-<p>
-I am a PhD candidate in Earth Sciences at The Ohio State University studying submarine landslides, sediment transport, and marine geohazards.
-</p>
+    <section class="card">
+      <h2>Conference Posters</h2>
 
-<div class="links">
+      <div class="poster-grid">
+        <div class="poster-card" onclick="openPoster('posters/agu2023.pdf')">
+          <h3>AGU 2023</h3>
+          <p>Open Poster</p>
+        </div>
 
-<a href="https://github.com/rocknrene" target="_blank">GitHub</a>
-<a href="https://scholar.google.com/citations?hl=en&user=i3UMLBMAAAAJ" target="_blank">Google Scholar</a>
-<a href="https://orcid.org/0009-0006-1897-0000" target="_blank">ORCID</a>
+        <div class="poster-card" onclick="openPoster('posters/gsa2026.pdf')">
+          <h3>GSA Regional 2026</h3>
+          <p>Open Poster</p>
+        </div>
 
-</div>
+        <div class="poster-card" onclick="openPoster('posters/jpgu2025.pdf')">
+          <h3>JpGU 2025</h3>
+          <p>Open Poster</p>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <section class="card">
+      <h2>Field Sites</h2>
+      <div id="globe"></div>
 
-</section>
+      <div class="site-legend">
+        <div class="legend-item"><span class="dot" style="background:#ff4d4d;"></span> Japan Trench / IODP Expedition 405</div>
+        <div class="legend-item"><span class="dot" style="background:#34d8ff;"></span> La Push, Washington</div>
+        <div class="legend-item"><span class="dot" style="background:#ffd84d;"></span> Navajo Nation</div>
+        <div class="legend-item"><span class="dot" style="background:#7efcff;"></span> Pacific transport path</div>
+      </div>
+    </section>
 
+    <section class="card">
+      <h2>What I'm Listening To</h2>
+      <div class="spotify">
+        <a href="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&redirect=true" target="_blank" rel="noopener noreferrer">
+          <img src="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&cover_image=true&theme=default" alt="Spotify now playing widget">
+        </a>
+      </div>
+    </section>
 
-<section class="card">
+    <footer>
+      <p>© 2026 René Castillo</p>
+    </footer>
 
-<h2>Conference Posters</h2>
+  </div>
 
-<div class="poster-grid">
+  <div id="posterViewer" class="lightbox">
+    <div class="lightbox-download">
+      <a id="posterDownload" href="#" target="_blank" rel="noopener noreferrer">Open PDF in New Tab</a>
+    </div>
+    <span class="lightbox-close" onclick="closePoster()">&times;</span>
+    <iframe id="posterFrame" title="Poster viewer"></iframe>
+  </div>
 
-<div class="poster">
-<img src="posters/agu2023.jpg">
-<div class="poster-overlay">
-<h3>AGU 2023</h3>
-<a href="posters/agu2023.pdf" target="_blank">Download Poster</a>
-</div>
-</div>
+  <script>
+    function openPoster(pdf){
+      document.getElementById("posterViewer").style.display = "block";
+      document.getElementById("posterFrame").src = pdf;
+      document.getElementById("posterDownload").href = pdf;
+    }
 
-<div class="poster">
-<img src="posters/gsa2026.jpg">
-<div class="poster-overlay">
-<h3>GSA Regional 2026</h3>
-<a href="posters/gsa2026.pdf" target="_blank">Download Poster</a>
-</div>
-</div>
+    function closePoster(){
+      document.getElementById("posterViewer").style.display = "none";
+      document.getElementById("posterFrame").src = "";
+      document.getElementById("posterDownload").href = "#";
+    }
 
-<div class="poster">
-<img src="posters/jpgu2025.jpg">
-<div class="poster-overlay">
-<h3>JpGU 2025</h3>
-<a href="posters/jpgu2025.pdf" target="_blank">Download Poster</a>
-</div>
-</div>
+    const globeContainer = document.getElementById("globe");
+    const scene = new THREE.Scene();
 
-</div>
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      globeContainer.clientWidth / globeContainer.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 3.2;
 
-</section>
+    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(globeContainer.clientWidth, globeContainer.clientHeight);
+    globeContainer.appendChild(renderer.domElement);
 
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
+    scene.add(ambientLight);
 
-<section class="card">
+    const sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
 
-<h2>Field Sites</h2>
+    const textureLoader = new THREE.TextureLoader();
+    const earthTexture = textureLoader.load(
+      "https://threejsfundamentals.org/threejs/resources/images/earth-day.jpg"
+    );
 
-<div id="globe"></div>
+    const earthMaterial = new THREE.MeshPhongMaterial({
+      map: earthTexture,
+      shininess: 8
+    });
 
-</section>
+    const earth = new THREE.Mesh(sphereGeometry, earthMaterial);
+    scene.add(earth);
 
+    const atmosphereGeometry = new THREE.SphereGeometry(1.03, 64, 64);
+    const atmosphereMaterial = new THREE.MeshBasicMaterial({
+      color: 0x66ccff,
+      transparent: true,
+      opacity: 0.12
+    });
+    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+    scene.add(atmosphere);
 
-<section class="card">
+    function latLonToVector3(lat, lon, radius){
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
 
-<h2>What I'm Listening To</h2>
+      const x = -(radius * Math.sin(phi) * Math.cos(theta));
+      const z =  (radius * Math.sin(phi) * Math.sin(theta));
+      const y =   radius * Math.cos(phi);
 
-<div class="spotify">
+      return new THREE.Vector3(x, y, z);
+    }
 
-<a href="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&redirect=true">
-<img src="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&cover_image=true&theme=default">
-</a>
+    function addMarker(lat, lon, color){
+      const group = new THREE.Group();
 
-</div>
+      const core = new THREE.Mesh(
+        new THREE.SphereGeometry(0.022, 20, 20),
+        new THREE.MeshBasicMaterial({ color: color })
+      );
 
-</section>
+      const glow = new THREE.Mesh(
+        new THREE.SphereGeometry(0.04, 20, 20),
+        new THREE.MeshBasicMaterial({
+          color: color,
+          transparent: true,
+          opacity: 0.35
+        })
+      );
 
+      const pos = latLonToVector3(lat, lon, 1.01);
+      group.position.copy(pos);
+      core.position.set(0,0,0);
+      glow.position.set(0,0,0);
 
-<footer>
-<p>© 2026 René Castillo</p>
-</footer>
+      group.add(glow);
+      group.add(core);
+      earth.add(group);
 
-</div>
+      return glow;
+    }
 
+    const japanGlow  = addMarker(38.322, 143.623, 0xff4d4d);
+    const lapushGlow = addMarker(47.913, -124.635, 0x34d8ff);
+    const navajoGlow = addMarker(36.154, -109.553, 0xffd84d);
 
-<script>
+    function createArc(pointsLatLon, color){
+      const arcPoints = [];
+      const segmentsPerLeg = 28;
 
-const scene=new THREE.Scene();
+      for(let i = 0; i < pointsLatLon.length - 1; i++){
+        const start = pointsLatLon[i];
+        const end = pointsLatLon[i + 1];
 
-const camera=new THREE.PerspectiveCamera(75,window.innerWidth/500,0.1,1000);
-camera.position.z=3;
+        for(let j = 0; j <= segmentsPerLeg; j++){
+          const t = j / segmentsPerLeg;
+          const lat = start[0] + (end[0] - start[0]) * t;
+          const lon = start[1] + (end[1] - start[1]) * t;
 
-const renderer=new THREE.WebGLRenderer({alpha:true});
-renderer.setSize(window.innerWidth,500);
-document.getElementById("globe").appendChild(renderer.domElement);
+          const lift = 1.03 + Math.sin(Math.PI * t) * 0.08;
+          arcPoints.push(latLonToVector3(lat, lon, lift));
+        }
+      }
 
-const geometry=new THREE.SphereGeometry(1,64,64);
+      const geometry = new THREE.BufferGeometry().setFromPoints(arcPoints);
+      const material = new THREE.LineBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: 0.9
+      });
 
-const texture=new THREE.TextureLoader().load(
-'https://threejsfundamentals.org/threejs/resources/images/earth-day.jpg'
-);
+      const line = new THREE.Line(geometry, material);
+      earth.add(line);
+      return line;
+    }
 
-const material=new THREE.MeshBasicMaterial({map:texture});
+    createArc(
+      [
+        [38.322, 143.623],
+        [42.0, 170.0],
+        [46.0, -160.0],
+        [47.913, -124.635]
+      ],
+      0x7efcff
+    );
 
-const earth=new THREE.Mesh(geometry,material);
-scene.add(earth);
+    let isDragging = false;
+    let previousMouseX = 0;
+    let previousMouseY = 0;
 
-function animate(){
-requestAnimationFrame(animate);
-earth.rotation.y+=0.0015;
-renderer.render(scene,camera);
-}
+    renderer.domElement.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      previousMouseX = e.clientX;
+      previousMouseY = e.clientY;
+    });
 
-animate();
+    window.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
 
-</script>
+    window.addEventListener("mousemove", (e) => {
+      if(!isDragging) return;
+
+      const deltaX = e.clientX - previousMouseX;
+      const deltaY = e.clientY - previousMouseY;
+
+      earth.rotation.y += deltaX * 0.005;
+      earth.rotation.x += deltaY * 0.003;
+
+      atmosphere.rotation.y = earth.rotation.y;
+      atmosphere.rotation.x = earth.rotation.x;
+
+      previousMouseX = e.clientX;
+      previousMouseY = e.clientY;
+    });
+
+    function pulseGlow(mesh, time, offset){
+      const s = 1 + 0.18 * Math.sin(time * 0.003 + offset);
+      mesh.scale.set(s, s, s);
+      mesh.material.opacity = 0.22 + 0.16 * (0.5 + 0.5 * Math.sin(time * 0.003 + offset));
+    }
+
+    function animate(time){
+      requestAnimationFrame(animate);
+
+      if(!isDragging){
+        earth.rotation.y += 0.0016;
+        atmosphere.rotation.y = earth.rotation.y;
+      }
+
+      pulseGlow(japanGlow, time, 0);
+      pulseGlow(lapushGlow, time, 1.7);
+      pulseGlow(navajoGlow, time, 3.2);
+
+      renderer.render(scene, camera);
+    }
+
+    animate(0);
+
+    window.addEventListener("resize", () => {
+      const width = globeContainer.clientWidth;
+      const height = globeContainer.clientHeight;
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    });
+  </script>
 
 </body>
 </html>
