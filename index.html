@@ -10,9 +10,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-ajax/dist/leaflet.ajax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
 
@@ -48,7 +46,6 @@ margin-bottom:60px;
 
 header h1{
 font-size:3em;
-margin-bottom:10px;
 }
 
 .profile{
@@ -94,7 +91,6 @@ border-radius:10px;
 
 .poster img{
 width:100%;
-display:block;
 }
 
 .poster-overlay{
@@ -110,16 +106,10 @@ justify-content:center;
 align-items:center;
 opacity:0;
 transition:.3s;
-text-align:center;
-padding:20px;
 }
 
 .poster:hover .poster-overlay{
 opacity:1;
-}
-
-.poster-overlay h3{
-margin-bottom:10px;
 }
 
 .poster-overlay a{
@@ -131,14 +121,9 @@ text-decoration:none;
 margin-top:10px;
 }
 
-.poster-overlay a:hover{
-background:#0095c8;
-}
-
-#map{
+#globe{
+width:100%;
 height:500px;
-border-radius:12px;
-margin-top:20px;
 }
 
 .spotify{
@@ -168,7 +153,6 @@ margin-top:60px;
 <p>PhD Candidate | Marine Geology | Geohazards | Sediment Transport</p>
 </header>
 
-
 <section class="profile card">
 
 <img src="profile.jpg">
@@ -178,33 +162,18 @@ margin-top:60px;
 <h2>About</h2>
 
 <p>
-I am a PhD candidate in Earth Sciences at The Ohio State University studying submarine landslides, sediment transport, and marine geohazards. My research integrates sedimentology, geomechanics, and machine learning to understand mass transport deposits and slope stability in convergent margin systems including the Japan Trench.
+I am a PhD candidate in Earth Sciences at The Ohio State University studying submarine landslides, sediment transport, and marine geohazards.
 </p>
 
 <div class="links">
 
 <a href="https://github.com/rocknrene" target="_blank">GitHub</a>
-
 <a href="https://scholar.google.com/citations?hl=en&user=i3UMLBMAAAAJ" target="_blank">Google Scholar</a>
-
 <a href="https://orcid.org/0009-0006-1897-0000" target="_blank">ORCID</a>
 
-<a href="https://linkedin.com" target="_blank">LinkedIn</a>
-
 </div>
 
 </div>
-
-</section>
-
-
-<section class="card">
-
-<h2>Research</h2>
-
-<p>
-My work focuses on probabilistic modeling of submarine slope failure, sediment routing, and disturbance classification in marine sediment cores. I investigate how seismic forcing, pore pressure, and sediment properties influence slope stability and the formation of mass transport deposits.
-</p>
 
 </section>
 
@@ -216,53 +185,27 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 <div class="poster-grid">
 
 <div class="poster">
-
-<img src="posters/agu2024.jpg">
-
+<img src="posters/agu2023.jpg">
 <div class="poster-overlay">
-
-<h3>AGU 2024</h3>
-
-<p>Submarine Sediment Transport in the Japan Trench</p>
-
-<a href="posters/agu2024.pdf" target="_blank">Download Poster</a>
-
+<h3>AGU 2023</h3>
+<a href="posters/agu2023.pdf" target="_blank">Download Poster</a>
 </div>
-
 </div>
-
 
 <div class="poster">
-
-<img src="posters/egu2025.jpg">
-
+<img src="posters/gsa2026.jpg">
 <div class="poster-overlay">
-
-<h3>EGU 2025</h3>
-
-<p>Probabilistic Slope Failure Modeling</p>
-
-<a href="posters/egu2025.pdf" target="_blank">Download Poster</a>
-
+<h3>GSA Regional 2026</h3>
+<a href="posters/gsa2026.pdf" target="_blank">Download Poster</a>
 </div>
-
 </div>
-
 
 <div class="poster">
-
-<img src="posters/osm2026.jpg">
-
+<img src="posters/jpgu2025.jpg">
 <div class="poster-overlay">
-
-<h3>OSM 2026</h3>
-
-<p>Mass Transport Deposits and Sediment Routing</p>
-
-<a href="posters/osm2026.pdf" target="_blank">Download Poster</a>
-
+<h3>JpGU 2025</h3>
+<a href="posters/jpgu2025.pdf" target="_blank">Download Poster</a>
 </div>
-
 </div>
 
 </div>
@@ -274,7 +217,7 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 
 <h2>Field Sites</h2>
 
-<div id="map"></div>
+<div id="globe"></div>
 
 </section>
 
@@ -286,9 +229,7 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 <div class="spotify">
 
 <a href="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&redirect=true">
-
-<img src="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=true&profanity=false&bar_color=1de9ed">
-
+<img src="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&cover_image=true&theme=default">
 </a>
 
 </div>
@@ -297,9 +238,7 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 
 
 <footer>
-
 <p>© 2026 René Castillo</p>
-
 </footer>
 
 </div>
@@ -307,46 +246,33 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 
 <script>
 
-var map = L.map('map').setView([30,-160],4);
+const scene=new THREE.Scene();
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19
-}).addTo(map);
+const camera=new THREE.PerspectiveCamera(75,window.innerWidth/500,0.1,1000);
+camera.position.z=3;
 
-L.marker([38.322,143.623]).addTo(map)
-.bindPopup("Japan Trench — IODP Expedition 405");
+const renderer=new THREE.WebGLRenderer({alpha:true});
+renderer.setSize(window.innerWidth,500);
+document.getElementById("globe").appendChild(renderer.domElement);
 
-L.marker([47.913,-124.635]).addTo(map)
-.bindPopup("La Push, Washington");
+const geometry=new THREE.SphereGeometry(1,64,64);
 
-L.marker([36.154,-109.553]).addTo(map)
-.bindPopup("Navajo Nation");
+const texture=new THREE.TextureLoader().load(
+'https://threejsfundamentals.org/threejs/resources/images/earth-day.jpg'
+);
 
-var sedimentPath=[
-[38.3,143.6],
-[40,-150],
-[42,-160],
-[44,-170]
-];
+const material=new THREE.MeshBasicMaterial({map:texture});
 
-var sediment=L.polyline(sedimentPath,{
-color:'cyan',
-weight:4,
-dashArray:'10,10'
-}).addTo(map);
+const earth=new THREE.Mesh(geometry,material);
+scene.add(earth);
 
-var offset=0;
+function animate(){
+requestAnimationFrame(animate);
+earth.rotation.y+=0.0015;
+renderer.render(scene,camera);
+}
 
-setInterval(function(){
-offset+=1;
-sediment.setStyle({dashOffset:offset});
-},100);
-
-var plates=new L.GeoJSON.AJAX(
-"https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json",
-{
-style:{color:'orange',weight:2}
-}).addTo(map);
+animate();
 
 </script>
 
