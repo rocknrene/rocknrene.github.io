@@ -2,69 +2,279 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Personal website of René Castillo, PhD candidate in Earth Sciences studying submarine landslides, sediment transport, and marine geohazards.">
 
-  <title>René Castillo | Marine Geology & Geohazards</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- CSS Reset -->
-  <link rel="stylesheet" href="https://yui.yahooapis.com/3.5.1/build/cssreset/cssreset-min.css">
+<title>René Castillo | Marine Geology</title>
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+
+body{
+font-family:'Inter',sans-serif;
+margin:0;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px;
+}
+
+header{
+text-align:center;
+margin-bottom:60px;
+}
+
+header h1{
+font-size:3em;
+margin-bottom:10px;
+}
+
+.profile{
+display:flex;
+flex-wrap:wrap;
+align-items:center;
+gap:40px;
+margin-bottom:60px;
+}
+
+.profile img{
+width:180px;
+border-radius:100px;
+border:4px solid white;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+padding:30px;
+border-radius:12px;
+margin-bottom:40px;
+backdrop-filter:blur(10px);
+}
+
+.links a{
+margin-right:20px;
+color:#7fd7ff;
+text-decoration:none;
+font-weight:600;
+}
+
+.links a:hover{
+text-decoration:underline;
+}
+
+.poster-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.poster-grid img{
+width:100%;
+border-radius:10px;
+transition:.2s;
+cursor:pointer;
+}
+
+.poster-grid img:hover{
+transform:scale(1.05);
+}
+
+#map{
+height:500px;
+border-radius:12px;
+margin-top:20px;
+}
+
+.spotify{
+text-align:center;
+}
+
+footer{
+text-align:center;
+opacity:.6;
+margin-top:60px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<header id="header">
-  <h1>René Castillo</h1>
-  <p>PhD Candidate | Marine Geology | Geohazards | Sediment Transport</p>
+<div class="container">
+
+<header>
+
+<h1>René Castillo</h1>
+
+<p>PhD Candidate | Marine Geology | Geohazards | Sediment Transport</p>
+
 </header>
 
-<main id="main">
 
-<section id="about">
-  <h2>About</h2>
-  <p>
-    I am a PhD candidate in Earth Sciences at The Ohio State University studying
-    submarine landslides, sediment transport, and marine geohazards. My research
-    integrates sedimentology, geomechanics, and machine learning to understand
-    mass transport deposits and slope stability in convergent margin systems,
-    including the Japan Trench.
-  </p>
+<section class="profile card">
+
+<img src="profile.jpg">
+
+<div>
+
+<h2>About</h2>
+
+<p>
+I am a PhD candidate in Earth Sciences at The Ohio State University studying submarine landslides, sediment transport, and marine geohazards. My research integrates sedimentology, geomechanics, and machine learning to understand mass transport deposits and slope stability in convergent margin systems including the Japan Trench.
+</p>
+
+<div class="links">
+
+<a href="https://github.com/rocknrene" target="_blank">GitHub</a>
+
+<a href="https://scholar.google.com/citations?hl=en&user=i3UMLBMAAAAJ" target="_blank">Google Scholar</a>
+
+<a href="https://orcid.org/0009-0006-1897-0000" target="_blank">ORCID</a>
+
+<a href="https://linkedin.com" target="_blank">LinkedIn</a>
+
+</div>
+
+</div>
+
 </section>
 
-<section id="research">
-  <h2>Research</h2>
-  <p>
-    My work focuses on probabilistic modeling of submarine slope failure,
-    sediment routing, and disturbance classification in marine sediment cores.
-    I investigate how seismic forcing, pore pressure, and sediment properties
-    influence slope stability and the formation of mass transport deposits.
-  </p>
+
+<section class="card">
+
+<h2>Research</h2>
+
+<p>
+My work focuses on probabilistic modeling of submarine slope failure, sediment routing, and disturbance classification in marine sediment cores. I investigate how seismic forcing, pore pressure, and sediment properties influence slope stability and the formation of mass transport deposits.
+</p>
+
 </section>
 
-<section id="links">
-  <h2>Links</h2>
-  <ul>
-    <li>
-      <a href="https://github.com/rocknrene" target="_blank">GitHub</a>
-    </li>
-    <li>
-      <a href="https://scholar.google.com/citations?hl=en&user=i3UMLBMAAAAJ" target="_blank">Google Scholar</a>
-    </li>
-    <li>
-      <a href="https://orcid.org/0009-0006-1897-0000" target="_blank">ORCID</a>
-    </li>
-  </ul>
+
+<section class="card">
+
+<h2>Conference Posters</h2>
+
+<div class="poster-grid">
+
+<img src="poster1.jpg">
+
+<img src="poster2.jpg">
+
+<img src="poster3.jpg">
+
+</div>
+
 </section>
 
-</main>
 
-<footer id="footer">
-  <p>© 2026 René Castillo</p>
+<section class="card">
+
+<h2>Field Sites</h2>
+
+<div id="map"></div>
+
+</section>
+
+
+<section class="card">
+
+<h2>What I'm Listening To</h2>
+
+<div class="spotify">
+
+<a href="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&redirect=true">
+
+<img src="https://spotify-github-profile.kittinanx.com/api/view?uid=31xfibrhxsxl4iwzequz4fgtxnry&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=true&profanity=false&bar_color=1de9ed">
+
+</a>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<p>© 2026 René Castillo</p>
+
 </footer>
 
+</div>
+
+
+<script>
+
+var map = L.map('map').setView([30,-160],4);
+
+L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',{
+maxZoom:18
+}).addTo(map);
+
+var japan=L.marker([38.322,143.623]).addTo(map)
+.bindPopup("Japan Trench — IODP Expedition 405");
+
+var lapush=L.marker([47.913,-124.635]).addTo(map)
+.bindPopup("La Push, Washington");
+
+var navajo=L.marker([36.154,-109.553]).addTo(map)
+.bindPopup("Navajo Nation");
+
+
+var sedimentPath=[
+[38.3,143.6],
+[40,-150],
+[42,-160],
+[44,-170]
+];
+
+L.polyline(sedimentPath,{
+color:'cyan',
+weight:3,
+dashArray:'6,8'
+}).addTo(map).bindPopup("Sediment transport pathway");
+
+
+var ringOfFire=[
+[60,-150],
+[55,-170],
+[45,170],
+[35,160],
+[25,150],
+[15,140],
+[5,130],
+[-10,120],
+[-20,110],
+[-30,110],
+[-40,120],
+[-50,150],
+[-40,170],
+[-20,-170],
+[0,-160],
+[20,-150],
+[40,-140]
+];
+
+var plate=L.polyline(ringOfFire,{
+color:'orange',
+weight:2,
+opacity:0.7
+}).addTo(map);
+
+
+</script>
+
 </body>
+
 </html>
