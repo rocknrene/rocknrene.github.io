@@ -11,7 +11,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
@@ -114,13 +113,9 @@ margin-top:60px;
 <div class="container">
 
 <header>
-
 <h1>René Castillo</h1>
-
 <p>PhD Candidate | Marine Geology | Geohazards | Sediment Transport</p>
-
 </header>
-
 
 <section class="profile card">
 
@@ -169,9 +164,7 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 <div class="poster-grid">
 
 <img src="poster1.jpg">
-
 <img src="poster2.jpg">
-
 <img src="poster3.jpg">
 
 </div>
@@ -222,13 +215,14 @@ L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{
 maxZoom:18
 }).addTo(map);
 
-var japan=L.marker([38.322,143.623]).addTo(map)
+
+L.marker([38.322,143.623]).addTo(map)
 .bindPopup("Japan Trench — IODP Expedition 405");
 
-var lapush=L.marker([47.913,-124.635]).addTo(map)
+L.marker([47.913,-124.635]).addTo(map)
 .bindPopup("La Push, Washington");
 
-var navajo=L.marker([36.154,-109.553]).addTo(map)
+L.marker([36.154,-109.553]).addTo(map)
 .bindPopup("Navajo Nation");
 
 
@@ -243,7 +237,8 @@ L.polyline(sedimentPath,{
 color:'cyan',
 weight:3,
 dashArray:'6,8'
-}).addTo(map).bindPopup("Sediment transport pathway");
+}).addTo(map)
+.bindPopup("Sediment transport pathway");
 
 
 var ringOfFire=[
@@ -266,15 +261,13 @@ var ringOfFire=[
 [40,-140]
 ];
 
-var plate=L.polyline(ringOfFire,{
+L.polyline(ringOfFire,{
 color:'orange',
 weight:2,
 opacity:0.7
 }).addTo(map);
 
-
 </script>
 
 </body>
-
 </html>
