@@ -12,17 +12,30 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-ajax/dist/leaflet.ajax.min.js"></script>
 
 <style>
 
 body{
 font-family:'Inter',sans-serif;
 margin:0;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 }
 
+#bg-video{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-1;
+filter:brightness(.35);
+}
+
 .container{
+position:relative;
+z-index:1;
 max-width:1000px;
 margin:auto;
 padding:40px;
@@ -53,7 +66,7 @@ border:4px solid white;
 }
 
 .card{
-background:rgba(255,255,255,.08);
+background:rgba(0,0,0,.45);
 padding:30px;
 border-radius:12px;
 margin-bottom:40px;
@@ -67,25 +80,59 @@ text-decoration:none;
 font-weight:600;
 }
 
-.links a:hover{
-text-decoration:underline;
-}
-
 .poster-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 }
 
-.poster-grid img{
-width:100%;
+.poster{
+position:relative;
+overflow:hidden;
 border-radius:10px;
-transition:.2s;
-cursor:pointer;
 }
 
-.poster-grid img:hover{
-transform:scale(1.05);
+.poster img{
+width:100%;
+display:block;
+}
+
+.poster-overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.75);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+opacity:0;
+transition:.3s;
+text-align:center;
+padding:20px;
+}
+
+.poster:hover .poster-overlay{
+opacity:1;
+}
+
+.poster-overlay h3{
+margin-bottom:10px;
+}
+
+.poster-overlay a{
+background:#00c3ff;
+padding:8px 16px;
+border-radius:6px;
+color:white;
+text-decoration:none;
+margin-top:10px;
+}
+
+.poster-overlay a:hover{
+background:#0095c8;
 }
 
 #map{
@@ -100,7 +147,7 @@ text-align:center;
 
 footer{
 text-align:center;
-opacity:.6;
+opacity:.7;
 margin-top:60px;
 }
 
@@ -110,12 +157,17 @@ margin-top:60px;
 
 <body>
 
+<video autoplay muted loop id="bg-video">
+<source src="ocean.mp4" type="video/mp4">
+</video>
+
 <div class="container">
 
 <header>
 <h1>René Castillo</h1>
 <p>PhD Candidate | Marine Geology | Geohazards | Sediment Transport</p>
 </header>
+
 
 <section class="profile card">
 
@@ -163,9 +215,55 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 
 <div class="poster-grid">
 
-<img src="poster1.jpg">
-<img src="poster2.jpg">
-<img src="poster3.jpg">
+<div class="poster">
+
+<img src="posters/agu2024.jpg">
+
+<div class="poster-overlay">
+
+<h3>AGU 2024</h3>
+
+<p>Submarine Sediment Transport in the Japan Trench</p>
+
+<a href="posters/agu2024.pdf" target="_blank">Download Poster</a>
+
+</div>
+
+</div>
+
+
+<div class="poster">
+
+<img src="posters/egu2025.jpg">
+
+<div class="poster-overlay">
+
+<h3>EGU 2025</h3>
+
+<p>Probabilistic Slope Failure Modeling</p>
+
+<a href="posters/egu2025.pdf" target="_blank">Download Poster</a>
+
+</div>
+
+</div>
+
+
+<div class="poster">
+
+<img src="posters/osm2026.jpg">
+
+<div class="poster-overlay">
+
+<h3>OSM 2026</h3>
+
+<p>Mass Transport Deposits and Sediment Routing</p>
+
+<a href="posters/osm2026.pdf" target="_blank">Download Poster</a>
+
+</div>
+
+</div>
 
 </div>
 
@@ -211,10 +309,9 @@ My work focuses on probabilistic modeling of submarine slope failure, sediment r
 
 var map = L.map('map').setView([30,-160],4);
 
-L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',{
-maxZoom:18
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
 }).addTo(map);
-
 
 L.marker([38.322,143.623]).addTo(map)
 .bindPopup("Japan Trench — IODP Expedition 405");
@@ -225,7 +322,6 @@ L.marker([47.913,-124.635]).addTo(map)
 L.marker([36.154,-109.553]).addTo(map)
 .bindPopup("Navajo Nation");
 
-
 var sedimentPath=[
 [38.3,143.6],
 [40,-150],
@@ -233,38 +329,23 @@ var sedimentPath=[
 [44,-170]
 ];
 
-L.polyline(sedimentPath,{
+var sediment=L.polyline(sedimentPath,{
 color:'cyan',
-weight:3,
-dashArray:'6,8'
-}).addTo(map)
-.bindPopup("Sediment transport pathway");
+weight:4,
+dashArray:'10,10'
+}).addTo(map);
 
+var offset=0;
 
-var ringOfFire=[
-[60,-150],
-[55,-170],
-[45,170],
-[35,160],
-[25,150],
-[15,140],
-[5,130],
-[-10,120],
-[-20,110],
-[-30,110],
-[-40,120],
-[-50,150],
-[-40,170],
-[-20,-170],
-[0,-160],
-[20,-150],
-[40,-140]
-];
+setInterval(function(){
+offset+=1;
+sediment.setStyle({dashOffset:offset});
+},100);
 
-L.polyline(ringOfFire,{
-color:'orange',
-weight:2,
-opacity:0.7
+var plates=new L.GeoJSON.AJAX(
+"https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json",
+{
+style:{color:'orange',weight:2}
 }).addTo(map);
 
 </script>
